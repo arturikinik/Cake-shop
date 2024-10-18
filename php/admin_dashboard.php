@@ -13,7 +13,7 @@ $sql = "
            o.status, i.cake_name, i.quantity
     FROM orders o
     LEFT JOIN order_items i ON o.id = i.order_id
-    ORDER BY o.id
+    ORDER BY o.name, o.id
 ";
 
 $stmt = $conn->query($sql);
@@ -41,8 +41,24 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <th>Статус</th>
             <th>Изменить статус</th>
         </tr>
-        <?php foreach ($orders as $order): ?>
-        <tr>
+        
+        <?php 
+        $currentUser = null; // Текущий пользователь
+        $previousUser = null; // Предыдущий пользователь, чтобы отслеживать смену
+
+        foreach ($orders as $order): 
+            // Проверяем, сменился ли пользователь
+            if ($currentUser !== $order['name']):
+                if ($previousUser !== null) {
+                    // Вставляем пустую строку после предыдущего пользователя
+                    echo '<tr><td colspan="9" style="background-color: #fff;">&nbsp;</td></tr>';
+                }
+
+                $currentUser = $order['name']; // Обновляем текущего пользователя
+                $previousUser = $currentUser;
+        ?>
+        <!-- Строка для нового пользователя -->
+        <tr style="background-color: #f9f9f9;">
             <td><?= $order['id'] ?></td>
             <td><?= $order['name'] ?></td>
             <td><?= $order['phone'] ?></td>
@@ -56,22 +72,54 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
                 <div class="custom-select-wrapper">
                 <select name="status">
-                    <option value="Обрабатываем заказ">Обрабатываем заказ</option>
-                    <option value="Готовим заказ">Готовим заказ</option>
-                    <option value="В пути">В пути</option>
-                    <option value="Доставлено">Доставлено</option>
+                    <option value="Обрабатываем заказ" <?= $order['status'] == 'Обрабатываем заказ' ? 'selected' : '' ?>>Обрабатываем заказ</option>
+                    <option value="Готовим заказ" <?= $order['status'] == 'Готовим заказ' ? 'selected' : '' ?>>Готовим заказ</option>
+                    <option value="В пути" <?= $order['status'] == 'В пути' ? 'selected' : '' ?>>В пути</option>
+                    <option value="Доставлено" <?= $order['status'] == 'Доставлено' ? 'selected' : '' ?>>Доставлено</option>
                 </select>
                 </div>
                 <button type="submit">Изменить статус</button>
             </form>
             </td>
         </tr>
+        <?php else: ?>
+        <!-- Строка для того же пользователя (без дублирования имени и телефона) -->
+        <tr>
+            <td><?= $order['id'] ?></td>
+            <td></td> <!-- Пустая ячейка для имени -->
+            <td></td> <!-- Пустая ячейка для телефона -->
+            <td><?= $order['cake_name'] ?></td>
+            <td><?= $order['quantity'] ?></td>
+            <td><?= $order['delivery_date'] ?></td>
+            <td><?= $order['comment'] ?></td>
+            <td><?= $order['status'] ?></td>
+            <td>
+            <form action="update_order_status.php" method="post">
+                <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
+                <div class="custom-select-wrapper">
+                <select name="status">
+                    <option value="Обрабатываем заказ" <?= $order['status'] == 'Обрабатываем заказ' ? 'selected' : '' ?>>Обрабатываем заказ</option>
+                    <option value="Готовим заказ" <?= $order['status'] == 'Готовим заказ' ? 'selected' : '' ?>>Готовим заказ</option>
+                    <option value="В пути" <?= $order['status'] == 'В пути' ? 'selected' : '' ?>>В пути</option>
+                    <option value="Доставлено" <?= $order['status'] == 'Доставлено' ? 'selected' : '' ?>>Доставлено</option>
+                </select>
+                </div>
+                <button type="submit">Изменить статус</button>
+            </form>
+            </td>
+        </tr>
+        <?php endif; ?>
         <?php endforeach; ?>
+
+        <!-- Добавляем пустую строку после последнего пользователя -->
+        <tr><td colspan="9" style="background-color: #fff;">&nbsp;</td></tr>
     </table>
     <a href="logout.php">Выйти</a>
-    <a href="../index.html">На главную</a>
+    <a href="../index.php">На главную</a>
 </body>
 </html>
+
+
 
 
 

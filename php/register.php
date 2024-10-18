@@ -1,5 +1,5 @@
 <?php
-// Подключение к базе данных
+session_start();
 $host = '127.0.0.1';
 $port = '3307';
 $dbname = 'cake_shop';
@@ -11,14 +11,13 @@ $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Хешируем пароль
-
     // Вставка пользователя
     $sql = "INSERT INTO users (username, password) VALUES (:username, :password)";
     $stmt = $conn->prepare($sql);
     $stmt->execute(['username' => $username, 'password' => $password]);
 
     echo "Регистрация прошла успешно!";
-    header("Location: ../index.html"); // Перенаправляем на главную страницу
+    header("Location: ../index.php"); // Перенаправляем на главную страницу
     exit();
 };
 ?>
@@ -37,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label>Пароль:</label>
         <input type="password" name="password" required>
         <button type="submit">Зарегистрироваться</button>
-        <a href="../index.html">На главную</a>
+        <a href="../index.php">На главную</a>
     </form>
     
 </body>

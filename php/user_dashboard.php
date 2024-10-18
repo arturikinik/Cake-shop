@@ -51,7 +51,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </table>
     <a href="logout.php">Выйти</a>
-    <a href="../index.html">На главную</a>
+    <a href="../index.php">На главную</a>
 </body>
 </html>
 

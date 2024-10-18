@@ -1,3 +1,11 @@
+<?php
+session_start();
+var_dump($_SESSION); // Для отладки, чтобы проверить сессию
+
+$isLoggedIn = isset($_SESSION['user_id']);
+$isAdmin = isset($_SESSION['role']) && $_SESSION['role'] == 'admin'; // Проверка на админа
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,11 +13,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Торт на заказ Барнаул</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Уведомление пользователя -->
+    <?php if (isset($_SESSION['message'])): ?>
+        <div class="alert" id="message">
+            <?php 
+                echo $_SESSION['message']; 
+                unset($_SESSION['message']); // Удаляем сообщение после вывода
+            ?>
+        </div>
+    <?php endif; ?>
     <!-- Шапка сайта -->
     <nav id="navbar">
         <div class="nav-container">
@@ -17,8 +31,17 @@
                 <li><a href="#about">О нас</a></li>
                 <li><a href="#gallery">Галерея</a></li>
                 <li><a href="#order">Заказ</a></li>
-                <li><a href="php/login.php">Войти</a></li>
-                <li><a href="php/register.php">Зарегистрироваться</a></li>
+                <?php if ($isLoggedIn): ?>
+                    <li><a href="php/logout.php">Выйти</a></li>
+                    <?php if ($isAdmin): ?>
+                        <li><a href="php/admin_dashboard.php">Управление</a></li> <!-- Кнопка для админа -->
+                    <?php else: ?>
+                        <li><a href="php/user_dashboard.php">Мои заказы</a></li>
+                    <?php endif; ?> <!-- Закрываем блок для проверки админа -->
+                <?php else: ?>
+                    <li><a href="php/login.php">Войти</a></li>
+                    <li><a href="php/register.php">Зарегистрироваться</a></li>
+                <?php endif; ?>
             </ul>
         </div>
     </nav>
@@ -129,29 +152,68 @@
 
     <section id="order">
         <h2>Оформление заказа</h2>
-        <form action="php/order.php" method="post">
-            <label for="name">Ваше имя: (также станет вашим логином при входе)</label>
-            <input type="text" id="name" name="name" required>
-            
-            <label for="phone">Телефон: (также станет вашим паролем при входе)</label>
-            <input type="tel" id="phone" name="phone" required>
-            
-            <label for="date">Дата доставки:</label>
-            <input type="date" id="date" name="date" required>
+        <?php if ($isLoggedIn): ?>
+            <!-- Форма только для заказа -->
+            <form action="php/order.php" method="post">
+            <input type="hidden" name="name" value="<?php echo htmlspecialchars($_SESSION['username']); ?>">
+            <input type="hidden" name="phone" value="<?php echo htmlspecialchars($_SESSION['phone']); ?>">
 
-            <label for="comment">Комментарий к заказу:</label>
-            <textarea id="comment" name="comment" placeholder="Введите пожелания по заказу" rows="3"></textarea>
 
-            <h3>Корзина</h3>
-            <div id="cart">
-                <p>Корзина пуста</p>
-            </div>
+                <label for="date">Дата доставки:</label>
+                <input type="date" id="date" name="date" required>
 
-            <input type="hidden" id="cartData" name="cartData">
-            <button type="submit" class="submit-btn">Оформить заказ</button>
-        </form>
+                <label for="comment">Комментарий к заказу:</label>
+                <textarea id="comment" name="comment" placeholder="Введите пожелания по заказу" rows="3"></textarea>
+
+                <h3>Корзина</h3>
+                <div id="cart">
+                    <p>Корзина пуста</p>
+                </div>
+
+                <input type="hidden" id="cartData" name="cartData">
+                <button type="submit" class="submit-btn">Оформить заказ</button>
+            </form>
+            <?php else: ?>
+                <!-- Форма для регистрации и заказа -->
+                <form action="php/order.php" method="post">
+                    <label for="name">Ваш логин:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="phone">Телефон:</label>
+                    <label for="phone">Телефон:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+7 (9XX) XXX-XX-XX">
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <label for="date">Дата доставки:</label>
+                    <input type="date" id="date" name="date" required>
+
+                    <label for="comment">Комментарий к заказу:</label>
+                    <textarea id="comment" name="comment" placeholder="Введите пожелания по заказу" rows="3"></textarea>
+
+                    <h3>Корзина</h3>
+                    <div id="cart">
+                        <p>Корзина пуста</p>
+                    </div>
+
+                    <input type="hidden" id="cartData" name="cartData">
+                    <button type="submit" class="submit-btn">Зарегистрироваться и оформить заказ</button>
+                </form>
+            <?php endif; ?>
     </section>
-
+    <!-- Подключение jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Подключение Inputmask -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#phone").inputmask({
+                mask: "+7 (999) 999-99-99",
+                placeholder: " "
+            });
+        });
+    </script>
+    <!-- Подключение моих скриптов -->          
     <script src="js/script.js"></script>
 </body>
 </html>

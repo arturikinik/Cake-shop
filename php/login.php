@@ -21,7 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['role'] = $user['role']; // Сохраняем роль в сессии
-
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['phone'] = $user['phone']; 
         // Перенаправляем в личный кабинет
         if ($user['role'] == 'admin') {
             header("Location: admin_dashboard.php");
@@ -49,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label>Пароль:</label>
         <input type="password" name="password" required>
         <button type="submit">Войти</button>
-        <a href="../index.html">На главную</a>
+        <a href="../index.php">На главную</a>
     </form>
 </body>
 </html>
