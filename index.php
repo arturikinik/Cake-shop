@@ -176,7 +176,7 @@ $isAdmin = isset($_SESSION['role']) && $_SESSION['role'] == 'admin'; // Пров
             <?php else: ?>
                 <!-- Форма для регистрации и заказа -->
                 <form action="php/order.php" method="post">
-                    <label for="name">Ваш логин:</label>
+                    <label for="name">Ваш логин:(только латинские символы)</label>
                     <input type="text" id="name" name="name" required>
 
                     <label for="phone">Телефон:</label>

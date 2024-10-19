@@ -55,7 +55,7 @@ body {
 
 /* Отступы для header и section, чтобы контент не перекрывался navbar */
 header, section {
-    padding-top: 100px;
+    padding-top: calc(100px + 2vw);
 }
 
 /* Стили для header */
@@ -107,7 +107,10 @@ header p {
 }
 
 #about p {
-    /* padding: 10px 50px 10px 50px; */
+    width: 80%;
+    text-align: center;
+    margin: 0 auto;
+    line-height: 2.6vh;
     color: #222262;
 }
 
@@ -117,22 +120,24 @@ header p {
     justify-content: center; 
     gap: 60px;
     text-align: center;
+    flex-wrap: wrap; /* Позволяем элементам переноситься */
 }
 
+/* Карточка для преимуществ */
 .advantage-item {
     margin-top: 40px;
     flex: 1;
-    max-width: 250px; /* Максимальная ширина блока */
+    max-width: 250px;
     background-color: #fcf9fb;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Тень */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .advantage-item:hover {
     transform: scale(1.1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* Более заметная тень при наведении */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
 .advantage-item img {
@@ -164,71 +169,67 @@ header p {
 .cake-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 25px;
-    justify-content: center;
+    gap: 2vw;
+    justify-content:  space-evenly;
+    align-items: stretch;
 }
 
-/* Карточка торта */
 .cake-item {
     background-color: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Тень карточки */
+    padding: 2vw;
+    border-radius: 1rem;
+    box-shadow: 0 0.6rem 2rem rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 28%; /* Ширина карточки */
+    width: 28%;
     text-align: center;
-    position: relative; 
     display: flex;
     flex-direction: column;
-    justify-content: space-between; 
-    height: 100%; 
-    min-height: 501px; /* Минимальная высота карточки */
+    justify-content: space-between;
+    min-height: 65vh; /* Фиксированная минимальная высота */
 }
 
-.cake-item h3, .cake-item p {
-    margin-bottom: 20px;
+.cake-item h3 {
+    font-size: clamp(1.4rem, 2vw, 1.8rem); /* Адаптивный шрифт */
+    color: #ff6600;
+    margin-bottom: 1rem;
+}
+
+.cake-item p {
+    font-size: clamp(1rem, 1.5vw, 1.2rem); /* Адаптивный шрифт */
+    color: #666;
+    flex-grow: 1; /* Заполнение пространства */
 }
 
 .cake-item:hover {
     transform: scale(1.05);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25);
 }
 
-/* Изображение торта */
 .cake-image {
     width: 100%;
-    height: 200px; 
+    height: 30vh; /* Адаптивная высота изображения */
 }
 
 .cake-image img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Сохранение пропорций изображения */
-    border-radius: 10px;
+    object-fit: contain;
+    border-radius: 0.5rem;
 }
 
-.cake-item h3 {
-    font-size: 1.8rem;
-    color: #ff6600;
-}
-
-.cake-item p {
-    font-size: 1.1rem;
-    color: #666;
-}
 
 /* Стили для кнопок */
 button {
     background-color: #ff6600;
     color: white;
     border: none;
-    padding: 15px 30px;
+    padding: clamp(10px, 2vw, 15px) clamp(20px, 4vw, 30px); /* Адаптивные отступы */
     cursor: pointer;
     border-radius: 50px;
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2vw, 1.2rem); /* Адаптивный шрифт */
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-top: auto; 
-    align-self: center; 
+    margin-top: auto;
+    align-self: center;
 }
 
 button:hover {
@@ -312,6 +313,145 @@ form textarea {
     max-width: 500px; /* Ограничиваем максимальную ширину */
     box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2); /* Тень для эффекта всплытия */
 }
+/* Планшеты (до 800px) */
+@media (max-width: 800px) {
+    .advantages {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 30px; /* Уменьшение расстояния между элементами */
+        justify-content: space-around; /* Выравнивание по ширине */
+    }
+
+    .advantage-item {
+        max-width: 45%; /* Ширина каждой карточки на планшетах */
+        padding: 15px; /* Уменьшение внутренних отступов */
+    }
+
+    .advantage-item h4 {
+        font-size: 1.6rem; /* Немного меньше заголовки */
+    }
+
+    .advantage-item p {
+        font-size: 1rem; /* Меньше текст описания */
+    }
+    .cake-item h3 {
+        font-size: 1.3rem;
+        margin-block-start: 0vw;
+    }
+    .cake-image {
+        margin-bottom: -2.5vw;
+    }
+    #navbar{
+        padding: 2vw 1vw;
+    }
+    #navbar ul li a {
+        font-size: 1rem; 
+        padding: 2vw 5vw;
+    }
+    #navbar ul {
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        gap: 4vw;
+    }
+    .nav-container {
+        padding: 2vw 0; /* Уменьшаем вертикальные отступы панели */
+    }
+
+    header {
+        padding-top: calc(70px + 1.5vw);
+    }
+}
+/* Мобильные устройства (до 700px) */
+@media (max-width: 700px) {
+    body {
+        font-size: 14px;
+    }
+    #navbar{
+        padding: 1.5vw 0;
+    }
+    #navbar ul li a {
+        font-size: 0.9rem; /* Ещё больше уменьшаем шрифт */
+        padding: 1.5vw 4vw; /* Сужаем отступы */
+    }
+    #navbar ul {
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        gap: 3vw;
+    }
+
+    .nav-container {
+        padding: 1.5vw 0; 
+    }
+
+    header {
+        padding-top: calc(40px + 1.5vw);
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .advantages {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .advantage-item {
+        width: 100%;
+        max-width: 90%;
+        padding: 15px;
+    }
+
+    .advantage-item img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .advantage-item h4 {
+        font-size: 1.5rem; 
+    }
+
+    .advantage-item p {
+        font-size: 1rem;
+    }
+    .cake-list {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 10vw;
+        align-content: center;
+        justify-content:  center;
+    }
+    
+    .cake-item {
+        background-color: white;
+        padding: 2vw;
+        border-radius: 1rem;
+        box-shadow: 0 0.6rem 2rem rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: 70%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 65vh; /* Фиксированная минимальная высота */
+    }
+    .cake-item h3 {
+        font-size: 1.2rem;
+        word-wrap: break-word;
+    }
+    .cake-image {
+        margin-bottom: 3.5vw;
+    }
+    button {
+        font-size: 1rem;
+        padding: clamp(7px, 2vw, 10px) clamp(13px, 3vw, 20px);
+        margin-bottom: 5vw;
+    }
+}
+
+
+ 
 
 
 

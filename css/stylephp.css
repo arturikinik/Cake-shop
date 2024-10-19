@@ -2,7 +2,7 @@
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 2vw; /* Адаптивный отступ */
     background-color: #f0f0f0;
     color: #333;
 }
@@ -10,18 +10,20 @@ body {
 h1 {
     text-align: center;
     color: #444;
-    margin-bottom: 30px;
+    margin-bottom: 3vw; /* Адаптивный отступ */
+    font-size: clamp(1.5rem, 4vw, 2rem); /* Адаптивный шрифт */
 }
 
 a {
     display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
+    margin-top: 2vw;
+    padding: clamp(10px, 2vw, 15px) clamp(20px, 4vw, 30px); /* Адаптивные отступы */
     background-color: #ff6600;
     color: white;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     transition: background-color 0.3s ease;
+    font-size: clamp(1rem, 2vw, 1.2rem); /* Адаптивный шрифт */
 }
 
 a:hover {
@@ -32,13 +34,13 @@ a:hover {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-bottom: 2vw;
     background-color: white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.1);
 }
 
 th, td {
-    padding: 6px 10px;
+    padding: clamp(6px, 1vw, 10px); /* Адаптивный отступ */
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
@@ -46,11 +48,11 @@ th, td {
 th {
     background-color: #ff6600;
     color: white;
-    font-size: 1rem;
+    font-size: clamp(1rem, 2vw, 1.2rem);
 }
 
 td {
-    font-size: 0.9rem;
+    font-size: clamp(0.9rem, 2vw, 1rem);
     color: #555;
 }
 
@@ -69,18 +71,13 @@ tr:hover {
 
 /* Общие стили для кнопок */
 button, a {
+    padding: clamp(8px, 1.5vw, 12px) clamp(16px, 3vw, 20px); /* Адаптивные отступы */
+    border-radius: 50px;
+    font-size: clamp(1rem, 2vw, 1.2rem);
     background-color: #ff6600;
     color: white;
-    text-decoration: none;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 50px;
-    font-size: 1.2rem;
     cursor: pointer;
-    display: inline-block;
-    /* margin: 20px 20px 20px 20px; */
     transition: background-color 0.3s ease, transform 0.3s ease;
-    text-align: center;
 }
 
 /* Эффект наведения */
@@ -112,7 +109,7 @@ select {
 /* Эффект наведения */
 select:hover {
     border-color: #ff8533;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.1);
 }
 
 /* Стиль для стрелки */
@@ -122,14 +119,18 @@ select::-ms-expand {
 
 /* Для Webkit-браузеров */
 select {
-    appearance: none; /* Убирает стандартный вид */
-    -webkit-appearance: none; /* Убирает стандартный вид для Chrome/Safari */
+    margin: 1vw;
+    padding: clamp(10px, 1.5vw, 15px);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    border: 2px solid #ff6600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Добавить пользовательскую стрелку */
-.custom-select-wrapper {
-    position: relative;
-    display: inline-block;
+.custom-select-wrapper::after {
+    right: 1vw; /* Адаптивное положение стрелки */
 }
 
 .custom-select-wrapper::after {
